@@ -85,11 +85,14 @@
     </div>
     <button onclick="{Reset()}">Reset</button>
     <script>
+      const board = document.getElementsByClassName("board");
       const input = document.getElementsByClassName("box");
       const print = document.getElementById("Winner");
+      let gameEnded = false;
       let arr = Array(9).fill(null);
       let currentPlayer = "X";
       function checkWinner() {
+        if (gameEnded) return;
         if (
           (arr[0] !== null && arr[0] === arr[1] && arr[0] === arr[2]) ||
           (arr[3] !== null && arr[3] === arr[4] && arr[3] === arr[5]) ||
@@ -101,12 +104,13 @@
           (arr[2] !== null && arr[2] === arr[4] && arr[2] === arr[6])
         ) {
           print.innerText = `WINNER is ${currentPlayer}`;
-        }
-        if (!arr.some((e) => e === null)) {
+          gameEnded = true;
+        } else if (!arr.some((e) => e === null)) {
           print.innerText = `DRAW`;
         }
       }
       function Handle(element) {
+        if (gameEnded) return;
         const id = Number(element.id);
         if (arr[id] !== null) return;
         arr[id] = currentPlayer;
